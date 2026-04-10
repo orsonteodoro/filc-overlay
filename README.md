@@ -29,8 +29,8 @@ CXXFLAGS="${CXXFLAGS} -std=gnu++20"
 
 This overlay will include recommended defaults and per-package overrides for the most common packages that rely on GNU extensions.Workflow After filc-bootstrap LC PhaseEmerge the filc-gentoo overlay.
 Set the Fil-C toolchain.
-emerge -e @system
-emerge -ve @world (or more selective rebuilds).
+- emerge -e @system
+- emerge -ve @world (or more selective rebuilds).
 
 Toolchain updates are handled by re-running the appropriate parts of filc-bootstrap first, then triggering a new world rebuild here.
 
@@ -40,8 +40,8 @@ filc-bootstrap — distro-agnostic Pre-LC + LC phases.
 
 ---
 
-Status: Planning / initial ebuilds
-Main goal: Make Fil-C a first-class, maintainable experience on Gentoo.
+- Status: Planning / initial ebuilds
+- Main goal: Make Fil-C a first-class, maintainable experience on Gentoo.
 
 
 
