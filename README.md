@@ -1,6 +1,6 @@
 # filc-gentoo
 
-**Gentoo overlay for Fil-C** — memory-safe C/C++ on Gentoo Linux.
+**A Gentoo overlay for Fil-C** — memory-safe C/C++ on Gentoo Linux.
 
 This repository provides Gentoo ebuilds, profiles, and integration to complete the Fil-C bootstrap after the `filc-bootstrap` LC phase.
 
