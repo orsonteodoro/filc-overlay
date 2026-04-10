@@ -1,4 +1,4 @@
-# filc-gentoo
+# filc-overlay
 
 **A Gentoo overlay for Fil-C** — memory-safe C/C++ on Gentoo Linux.
 
