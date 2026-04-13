@@ -1,0 +1,82 @@
+#!/bin/bash
+# Copyright 2026 Orson Teodoro
+# Distributed under the terms of the GNU General Public License v2
+# Version: 20250413
+
+DESCRIPTION="Manage Fil-C memory-safe compiler versions"
+
+inherit eselect
+
+# List installed Fil-C versions
+list_versions() {
+    local dir
+    for dir in /usr/lib/fil-c/*; do
+        [[ -d "$dir/bin" ]] || continue
+        basename "$dir"
+    done
+}
+
+describe() {
+    echo "Manage Fil-C compiler versions"
+}
+
+describe_list() {
+    echo "List available Fil-C versions"
+}
+
+do_list() {
+    local versions=($(list_versions))
+    if [[ ${#versions[@]} -eq 0 ]]; then
+        echo "No Fil-C versions installed."
+        return 0
+    fi
+
+    echo "Available Fil-C versions:"
+    for v in "${versions[@]}"; do
+        if [[ -L "/usr/bin/filcc" && "$(readlink -f /usr/bin/filcc 2>/dev/null)" == "/usr/lib/fil-c/${v}/bin/filcc" ]]; then
+            echo "  [${v}] (active)"
+        else
+            echo "   ${v}"
+        fi
+    done
+}
+
+describe_set() {
+    echo "Set the active Fil-C version"
+}
+
+do_set() {
+    local version="$1"
+
+    if [[ -z "${version}" ]]; then
+        die "Usage: eselect filc set <version>"
+    fi
+
+    if [[ ! -d "/usr/lib/fil-c/${version}" ]]; then
+        die "Version '${version}' is not installed."
+    fi
+
+    # Create symlinks
+    ln -sf "/usr/lib/fil-c/${version}/bin/filcc" "/usr/bin/filcc" || die
+    ln -sf "/usr/lib/fil-c/${version}/bin/fil++" "/usr/bin/fil++" || die
+
+    echo "Fil-C version ${version} is now active."
+    echo "You can now compile with: filcc hello.c -o hello"
+}
+
+describe_show() {
+    echo "Show the currently active Fil-C version"
+}
+
+do_show() {
+    if [[ -L "/usr/bin/filcc" ]]; then
+        local active=$(readlink -f "/usr/bin/filcc" 2>/dev/null)
+        if [[ "${active}" == /usr/lib/fil-c/* ]]; then
+            echo "Current Fil-C version: $(basename "$(dirname "$(dirname "${active}")")")"
+        else
+            echo "Current: ${active}"
+        fi
+    else
+        echo "No Fil-C version is currently active."
+    fi
+}

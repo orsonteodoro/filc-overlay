@@ -13,10 +13,6 @@ LICENSE="MIT"
 SLOT="0.678"
 KEYWORDS="~amd64"
 
-DEPEND="${DEPEND}"
-RDEPEND="${RDEPEND}"
-BDEPEND="${BDEPEND}"
-
 S="${WORKDIR}/fil-c-0.678"
 
 src_configure() {
@@ -26,7 +22,7 @@ src_configure() {
 src_compile() {
     einfo "Building Fil-C 0.678..."
     # TODO: Integrate build scripts
-    die "Full build integration coming soon"
+    die "Build integration coming soon"
 }
 
 src_install() {
@@ -36,6 +32,6 @@ src_install() {
 pkg_postinst() {
     elog "Fil-C version 0.678 installed."
     elog ""
-    elog "To activate it:"
+    elog "To activate:"
     elog "    eselect filc set 0.678"
 }

@@ -9,46 +9,31 @@
 
 inherit multilib
 
-# =============================================================================
-# Path Helpers (Easy for Gentoo users)
-# =============================================================================
-
-# @FUNCTION: filc_get_version
+# Path helpers
 filc_get_version() {
     echo "${PV}"
 }
 
-# @FUNCTION: filc_get_libdir
-# Returns base path for Fil-C toolchain
 filc_get_libdir() {
     echo "/usr/lib/fil-c/$(filc_get_version)"
 }
 
-# @FUNCTION: filc_get_yolo_libdir
-# Returns base path for Yolo glibc layer
 filc_get_yolo_libdir() {
     echo "/usr/lib/yolo/$(filc_get_version)"
 }
 
-# @FUNCTION: filc_get_bindir
 filc_get_bindir() {
     echo "$(filc_get_libdir)/bin"
 }
 
-# =============================================================================
-# Slotting (Simple and intuitive)
-# =============================================================================
-
+# Slotting
 if [[ "${PV}" == "9999" ]]; then
     SLOT="live"
 else
-    SLOT="${PV%.*}"          # e.g. 0.678 → SLOT="0.678"
+    SLOT="${PV%.*}"
 fi
 
-# =============================================================================
-# Common Dependencies
-# =============================================================================
-
+# Common dependencies
 DEPEND="
     dev-libs/libxml2
     net-misc/curl
@@ -62,10 +47,7 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND="${DEPEND}"
 
-# =============================================================================
-# Default src_install (can be overridden)
-# =============================================================================
-
+# Default install helper
 filc_src_install() {
     local filc_libdir=$(filc_get_libdir)
     local yolo_libdir=$(filc_get_yolo_libdir)

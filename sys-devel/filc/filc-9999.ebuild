@@ -14,10 +14,6 @@ LICENSE="MIT"
 SLOT="live"
 KEYWORDS=""
 
-DEPEND="${DEPEND}"
-RDEPEND="${RDEPEND}"
-BDEPEND="${BDEPEND}"
-
 src_unpack() {
     git-r3_src_unpack
 }
@@ -32,8 +28,8 @@ src_configure() {
 
 src_compile() {
     einfo "Building Fil-C live version (this will take a long time)..."
-    # TODO: Integrate bootstrap build scripts here in future iteration
-    die "Full build integration coming soon"
+    # TODO: Integrate actual bootstrap build here later
+    die "Build integration coming in next iteration"
 }
 
 src_install() {
@@ -43,9 +39,8 @@ src_install() {
 pkg_postinst() {
     elog "Fil-C live version installed."
     elog ""
-    elog "To activate it:"
+    elog "To activate:"
     elog "    eselect filc set live"
     elog ""
-    elog "After activation you can compile with:"
-    elog "    filcc hello.c -o hello"
+    elog "Compile with: filcc hello.c -o hello"
 }
