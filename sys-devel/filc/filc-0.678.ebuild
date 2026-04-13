@@ -7,15 +7,16 @@ inherit filc
 
 DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
-SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/0.678.tar.gz -> fil-c-0.678.tar.gz"
+SRC_URI="
+https://github.com/pizlonator/fil-c/archive/refs/tags/v${PV}.tar.gz -> fil-c-${PV}.tar.gz"
 
-LICENSE="Apache-2 BSD-2 LGPL-2.1+ MIT"
+LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
 SLOT="0.678"
 KEYWORDS="~amd64"
 RESTRICT="sandbox"
 
-IUSE="glibc musl"
-REQUIRED_USE="^^ ( glibc musl )"
+IUSE="elibc_glibc elibc_musl"
+REQUIRED_USE="^^ ( elibc_glibc elibc_musl )"
 
 DEPEND="
     dev-libs/libxml2
@@ -35,7 +36,7 @@ S="${WORKDIR}/fil-c-0.678"
 
 src_configure() {
     einfo "Fil-C 0.678 source ready at ${S}"
-    einfo "Building with $(usex glibc 'glibc' 'musl') backend"
+    einfo "Building with $(usex elibc_glibc 'glibc' 'musl') backend"
 }
 
 src_compile() {
@@ -43,13 +44,13 @@ src_compile() {
 
     cd "${S}" || die
 
-    if use glibc; then
+    if use elibc_glibc; then
         if [[ -x "./build_all_fast_glibc.sh" ]]; then
             ./build_all_fast_glibc.sh || die
         else
             die "build_all_fast_glibc.sh not found"
         fi
-    elif use musl; then
+    elif use elibc_musl; then
         if [[ -x "./build_all_fast_musl.sh" ]]; then
             ./build_all_fast_musl.sh || die
         else

@@ -16,19 +16,22 @@ else
     SLOT="${PV%.*}"
 fi
 
-IUSE="glibc musl"
-REQUIRED_USE="^^ ( glibc musl )"
-
-# Default to glibc
-if ! use glibc && ! use musl; then
-    IUSE+=" +glibc"
-fi
+# Use standard Gentoo elibc_* flags
+IUSE="elibc_glibc elibc_musl"
+REQUIRED_USE="^^ ( elibc_glibc elibc_musl )"
 
 DEPEND="app-eselect/eselect-filc"
 RDEPEND="${DEPEND}"
 BDEPEND="${DEPEND}"
 
-# Create LLVM-style symlinks
+# Default to glibc if neither flag is explicitly disabled
+pkg_setup() {
+    if ! use elibc_glibc && ! use elibc_musl; then
+        einfo "No elibc_* flag selected, defaulting to glibc"
+    fi
+}
+
+# Create LLVM-style symlinks for compatibility
 filc_create_symlinks() {
     local bindir=$(filc_get_bindir)
     local chost=$(tc-getCC)
@@ -50,9 +53,8 @@ filc_create_symlinks() {
     einfo "Created LLVM-style symlinks for Fil-C ${PV}"
 }
 
-# Safe cleanup that respects parallel versions
+# Safe cleanup respecting parallel versions
 filc_pkg_prerm() {
-    # Only remove symlinks if this version is not being replaced by another Fil-C version
     if [[ -z "${REPLACED_BY_VERSION}" ]]; then
         rm -f "${ROOT}"/usr/bin/filcc "${ROOT}"/usr/bin/fil++ 2>/dev/null || true
         rm -f "${ROOT}"/usr/bin/filcc-* "${ROOT}"/usr/bin/*filcc-* 2>/dev/null || true
@@ -63,4 +65,4 @@ filc_pkg_prerm() {
     fi
 }
 
-EXPORT_FUNCTIONS src_install pkg_prerm
+EXPORT_FUNCTIONS pkg_prerm
