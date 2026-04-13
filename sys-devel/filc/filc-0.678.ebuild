@@ -9,9 +9,23 @@ DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
 SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/0.678.tar.gz -> fil-c-0.678.tar.gz"
 
-LICENSE="MIT"
+LICENSE="Apache-2.0 BSD-2"
 SLOT="0.678"
 KEYWORDS="~amd64"
+
+DEPEND="
+    dev-libs/libxml2
+    net-misc/curl
+    sys-devel/clang
+    sys-devel/llvm
+    dev-util/cmake
+    dev-util/ninja
+    sys-devel/gcc
+    app-eselect/eselect-filc
+"
+
+RDEPEND="${DEPEND}"
+BDEPEND="${DEPEND}"
 
 S="${WORKDIR}/fil-c-0.678"
 
@@ -22,7 +36,7 @@ src_configure() {
 src_compile() {
     einfo "Building Fil-C 0.678..."
     # TODO: Integrate build scripts
-    die "Build integration coming soon"
+    die "Full build integration coming soon"
 }
 
 src_install() {
@@ -32,6 +46,9 @@ src_install() {
 pkg_postinst() {
     elog "Fil-C version 0.678 installed."
     elog ""
-    elog "To activate:"
+    elog "To activate this version:"
     elog "    eselect filc set 0.678"
+    elog ""
+    elog "After activation you can compile with:"
+    elog "    filcc hello.c -o hello"
 }
