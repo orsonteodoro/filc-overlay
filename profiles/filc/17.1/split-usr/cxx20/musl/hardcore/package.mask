@@ -1,0 +1,12 @@
+# Hardcore profile - extreme security + adventurous setup
+# High-risk languages
+dev-lang/rust
+virtual/rust
+dev-lang/go
+dev-go/*
+
+# Non-essential Python/Perl
+dev-python/* 
+dev-perl/*
+# Keep minimal Python/Perl for Portage, kernel, crypto, browsers
+# (full ban would break system)

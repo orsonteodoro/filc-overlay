@@ -1,4 +1,4 @@
-# Fil-C strict profile: merged-usr / cxx20 / glibc
+# Fil-C hardcore profile: merged-usr / cxx20 / musl
 CC="/opt/fil/bin/filcc"
 CXX="/opt/fil/bin/fil++"
 

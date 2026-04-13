@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# generate-filc-profiles.sh - Generate Fil-C Gentoo profiles (glibc primary)
+# generate-filc-profiles.sh - Full Fil-C profile generator (unstrict/strict/hardcore)
 # =============================================================================
 
 set -euo pipefail
@@ -8,14 +8,15 @@ set -euo pipefail
 OVERLAY_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROFILES_DIR="${OVERLAY_ROOT}/profiles/filc/17.1"
 
-echo "=== Generating Fil-C profiles (glibc primary, musl secondary) ==="
+echo "=== Generating Fil-C profiles (unstrict / strict / hardcore) ==="
 
-mkdir -p "${PROFILES_DIR}"/{merged-usr,split-usr}/cxx20/{glibc,musl}/{unstrict,strict}
+# Base directories
+mkdir -p "${PROFILES_DIR}"/{merged-usr,split-usr}/cxx20/{glibc,musl}/{unstrict,strict,hardcore}
 
 create_profile() {
-    local usr_type="$1"      # merged-usr or split-usr
-    local libc="$2"          # glibc or musl
-    local level="$3"         # unstrict or strict
+    local usr_type="$1"
+    local libc="$2"
+    local level="$3"
 
     local dir="${PROFILES_DIR}/${usr_type}/cxx20/${libc}/${level}"
     mkdir -p "$dir"
@@ -33,7 +34,7 @@ filc:17.1/${usr_type}/cxx20/${libc}/${level}
 EOF
     fi
 
-    # make.defaults
+    # make.defaults - hardening always enabled
     cat > "$dir/make.defaults" << EOF
 # Fil-C ${level} profile: ${usr_type} / cxx20 / ${libc}
 CC="/opt/fil/bin/filcc"
@@ -41,15 +42,30 @@ CXX="/opt/fil/bin/fil++"
 
 CXXFLAGS="\${CXXFLAGS} -std=c++20"
 
-# Hardening enabled across the overlay (safe with libpizlo.so)
+# Hardening enabled across all profiles
 CFLAGS="\${CFLAGS} -fPIC -fstack-protector-strong"
 CXXFLAGS="\${CXXFLAGS} -fPIC -fstack-protector-strong"
 EOF
 
     # package.mask
-    if [[ "$level" == "strict" ]]; then
+    if [[ "$level" == "hardcore" ]]; then
         cat > "$dir/package.mask" << EOF
-# Strict profile: C/C++ focused (full mitigation)
+# Hardcore profile - extreme security + adventurous setup
+# High-risk languages
+dev-lang/rust
+virtual/rust
+dev-lang/go
+dev-go/*
+
+# Non-essential Python/Perl
+dev-python/* 
+dev-perl/*
+# Keep minimal Python/Perl for Portage, kernel, crypto, browsers
+# (full ban would break system)
+EOF
+    elif [[ "$level" == "strict" ]]; then
+        cat > "$dir/package.mask" << EOF
+# Strict profile - C/C++ focused
 dev-lang/rust
 virtual/rust
 dev-lang/go
@@ -57,7 +73,7 @@ dev-go/*
 EOF
     else
         cat > "$dir/package.mask" << EOF
-# unstrict profile: full compatibility (allows Rust, Go, etc.)
+# unstrict profile - maximum compatibility
 EOF
     fi
 
@@ -65,16 +81,17 @@ EOF
 }
 
 # Generate all combinations
-create_profile "merged-usr" "glibc" "unstrict"
-create_profile "merged-usr" "glibc" "strict"
-create_profile "merged-usr" "musl"   "unstrict"
-create_profile "merged-usr" "musl"   "strict"
-create_profile "split-usr"  "glibc"  "unstrict"
-create_profile "split-usr"  "glibc"  "strict"
-create_profile "split-usr"  "musl"   "unstrict"
-create_profile "split-usr"  "musl"   "strict"
+echo "Generating profiles..."
 
-# repo metadata
+for usr in merged-usr split-usr; do
+    for libc in glibc musl; do
+        create_profile "$usr" "$libc" "unstrict"
+        create_profile "$usr" "$libc" "strict"
+        create_profile "$usr" "$libc" "hardcore"
+    done
+done
+
+# Metadata
 mkdir -p "${OVERLAY_ROOT}/profiles"
 echo "filc" > "${OVERLAY_ROOT}/profiles/repo_name"
 
@@ -85,9 +102,9 @@ auto-sync = false
 EOF
 
 echo ""
-echo "=== Profile generation completed ==="
-echo "Default (recommended): filc:17.1/merged-usr/cxx20/glibc/unstrict"
-echo "Musl support is included but marked secondary."
+echo "=== Generation completed! ==="
+echo "Default profile: filc:17.1/merged-usr/cxx20/glibc/unstrict"
+echo "Hardcore profile example: filc:17.1/merged-usr/cxx20/glibc/hardcore"
 echo ""
-echo "To activate the default:"
+echo "To activate default:"
 echo "    eselect profile set filc:17.1/merged-usr/cxx20/glibc/unstrict"

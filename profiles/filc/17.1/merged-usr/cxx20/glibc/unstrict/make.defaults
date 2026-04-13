@@ -2,9 +2,8 @@
 CC="/opt/fil/bin/filcc"
 CXX="/opt/fil/bin/fil++"
 
-# Default to C++20
 CXXFLAGS="${CXXFLAGS} -std=c++20"
 
-# Hardening flags enabled across the entire overlay
+# Hardening enabled across all profiles
 CFLAGS="${CFLAGS} -fPIC -fstack-protector-strong"
 CXXFLAGS="${CXXFLAGS} -fPIC -fstack-protector-strong"
