@@ -80,4 +80,4 @@ filc_pkg_prerm() {
     fi
 }
 
-EXPORT_FUNCTIONS pkg_prerm pkg_setup
+EXPORT_FUNCTIONS pkg_setup pkg_prerm
