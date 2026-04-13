@@ -59,36 +59,51 @@ auto-sync = yes
 EOF
 
 emerge --sync filc
+```
 
-Available ProfilesFil-C provides versioned profiles under the filc:17.1 namespace:Default (Recommended)filc:17.1/merged-usr/cxx20/glibc/unstrict ← Default profile
+### Available Profiles
+Fil-C provides versioned profiles under the filc:17.1 namespace.
 
-Main Profilesmerged-usr (most users):filc:17.1/merged-usr/cxx20/glibc/unstrict
-filc:17.1/merged-usr/cxx20/glibc/strict
-filc:17.1/merged-usr/cxx20/musl/unstrict
-filc:17.1/merged-usr/cxx20/musl/strict
+### Profile Levels
+* unstrict — Maximum compatibility. Allows Rust, Go, and other languages. Best for daily use.
+* strict — C/C++ focused. Masks Rust and Go. Stronger mitigation while remaining usable.
+* hardcore — Extreme security mode. Aggressive masking of non-C/C++ languages. Adventurous/experimental.
+Warning: Hardcore mode may require manual workarounds (e.g. Paludis or custom setup) because it restricts many packages. Python and Perl are kept only where essential (Portage, kernel build, crypto, browsers).
 
-split-usr:filc:17.1/split-usr/cxx20/glibc/unstrict
-filc:17.1/split-usr/cxx20/glibc/strict
-filc:17.1/split-usr/cxx20/musl/unstrict
-filc:17.1/split-usr/cxx20/musl/strict
+#### Main Profiles
+* merged-usr (most users):
+* filc:17.1/merged-usr/cxx20/glibc/unstrict ← Default / Recommended
+* filc:17.1/merged-usr/cxx20/glibc/strict
+* filc:17.1/merged-usr/cxx20/glibc/hardcore
+* filc:17.1/merged-usr/cxx20/musl/unstrict
+* filc:17.1/merged-usr/cxx20/musl/strict
+* filc:17.1/merged-usr/cxx20/musl/hardcore
 
-Profile Differencesunstrict — Maximum compatibility. Allows Rust, Go, and other languages.
-strict — C/C++ focused. Masks Rust and other non-C/C++ languages for stronger mitigation.
+#### split-usr:
+* filc:17.1/split-usr/cxx20/glibc/unstrict
+* filc:17.1/split-usr/cxx20/glibc/strict
+* filc:17.1/split-usr/cxx20/glibc/hardcore
+* filc:17.1/split-usr/cxx20/musl/unstrict
+* filc:17.1/split-usr/cxx20/musl/strict
+* filc:17.1/split-usr/cxx20/musl/hardcore
 
-Hardening flags (-fPIC -fstack-protector-strong) are enabled in both profiles.
 
 ### How to Select a Profile
 
 ```bash
 
-# Recommended default
+# Recommended starting point
 eselect profile set filc:17.1/merged-usr/cxx20/glibc/unstrict
 
 # Strict version
 eselect profile set filc:17.1/merged-usr/cxx20/glibc/strict
 
-# List all available profiles
+# Extreme hardcore mode (use with caution)
+eselect profile set filc:17.1/merged-usr/cxx20/glibc/hardcore
+
+# List all profiles
 eselect profile list
+
 
 ```
 
@@ -132,6 +147,11 @@ emerge -ve @world
 
 Note: Full system rebuilds with Fil-C can take a very long time and may require significant RAM and disk space.
 
+### Hardcore Mode Notes
+The hardcore profile is intended for users who want maximum mitigation. It aggressively masks non-C/C++ languages.
+Python and Perl are kept only where absolutely necessary (Portage, kernel compilation, crypto libraries, browsers).
+You may need to use alternative tools or package managers (e.g. Paludis) for full hardcore usage.
+
 ### Current Status
 
 * sys-devel/filc — Available as live (9999) and tagged (0.678) versions
@@ -140,10 +160,10 @@ Note: Full system rebuilds with Fil-C can take a very long time and may require 
 
 ### Future Plans
 
-* Better integration with bootstrap process
+* Better integration with filc-bootstrap
 * Improved yolo-glibc handling
 * Catalyst-style stage generation
-* More mature strict profile rules
+* Enhanced hardcore mode tooling
 
 ### Feedback & Contributions
 
