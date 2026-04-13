@@ -7,8 +7,7 @@ inherit filc
 
 DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
-SRC_URI="
-https://github.com/pizlonator/fil-c/archive/refs/tags/v${PV}.tar.gz -> fil-c-${PV}.tar.gz"
+SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/v${PV}.tar.gz -> fil-c-${PV}.tar.gz"
 
 LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
 SLOT="0.678"
@@ -69,8 +68,13 @@ pkg_prerm() {
 }
 
 pkg_postinst() {
+    filc_update_ld_so_conf
+
     elog "Fil-C version 0.678 installed to $(filc_get_libdir)"
     elog ""
     elog "To activate this version:"
     elog "    eselect filc set 0.678"
+    elog ""
+    elog "You can now compile with:"
+    elog "    filcc hello.c -o hello"
 }

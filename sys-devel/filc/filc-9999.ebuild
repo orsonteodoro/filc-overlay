@@ -75,6 +75,8 @@ pkg_prerm() {
 }
 
 pkg_postinst() {
+    filc_update_ld_so_conf
+
     elog "Fil-C live version installed to $(filc_get_libdir)"
     elog ""
     elog "To activate this version:"
