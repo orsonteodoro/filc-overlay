@@ -1,6 +1,6 @@
-# filc-gentoo
+# filc-overlay
 
-**Gentoo overlay for Fil-C** — memory-safe C/C++ on Gentoo Linux.
+**A Gentoo overlay for Fil-C** — memory-safe C/C++ on Gentoo Linux.
 
 This repository provides Gentoo ebuilds, profiles, and integration to complete the Fil-C bootstrap after the `filc-bootstrap` LC phase.
 
@@ -29,8 +29,8 @@ CXXFLAGS="${CXXFLAGS} -std=gnu++20"
 
 This overlay will include recommended defaults and per-package overrides for the most common packages that rely on GNU extensions.Workflow After filc-bootstrap LC PhaseEmerge the filc-gentoo overlay.
 Set the Fil-C toolchain.
-emerge -e @system
-emerge -ve @world (or more selective rebuilds).
+- emerge -e @system
+- emerge -ve @world (or more selective rebuilds).
 
 Toolchain updates are handled by re-running the appropriate parts of filc-bootstrap first, then triggering a new world rebuild here.
 
