@@ -70,8 +70,8 @@ Fil-C provides versioned profiles under the filc:17.1 namespace.
 * hardcore — Extreme security mode. Aggressive masking of non-C/C++ languages. Adventurous/experimental.
 Warning: Hardcore mode may require manual workarounds (e.g. Paludis or custom setup) because it restricts many packages. Python and Perl are kept only where essential (Portage, kernel build, crypto, browsers).
 
-#### Main Profiles
-* merged-usr (most users):
+### Main Profiles
+#### merged-usr (most users):
 * filc:17.1/merged-usr/cxx20/glibc/unstrict ← Default / Recommended
 * filc:17.1/merged-usr/cxx20/glibc/strict
 * filc:17.1/merged-usr/cxx20/glibc/hardcore
