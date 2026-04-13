@@ -23,6 +23,13 @@ DEPEND="app-eselect/eselect-filc"
 RDEPEND="${DEPEND}"
 BDEPEND="${DEPEND}"
 
+# Default to glibc if neither flag is explicitly disabled
+filc_pkg_setup() {
+    if ! use elibc_glibc && ! use elibc_musl; then
+        einfo "No elibc_* flag selected, defaulting to glibc"
+    fi
+}
+
 # Create LLVM-style symlinks
 filc_create_symlinks() {
     local bindir=$(filc_get_bindir)
@@ -73,4 +80,4 @@ filc_pkg_prerm() {
     fi
 }
 
-EXPORT_FUNCTIONS pkg_prerm
+EXPORT_FUNCTIONS pkg_prerm pkg_setup
