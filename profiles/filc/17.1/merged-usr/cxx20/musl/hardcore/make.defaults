@@ -4,6 +4,9 @@ CXX="/opt/fil/bin/fil++"
 
 CXXFLAGS="${CXXFLAGS} -std=c++20"
 
-# Hardening enabled across all profiles
+# Hardening enabled across the overlay
 CFLAGS="${CFLAGS} -fPIC -fstack-protector-strong"
 CXXFLAGS="${CXXFLAGS} -fPIC -fstack-protector-strong"
+
+# Set the correct elibc flag for this profile
+USE="${USE} elibc_musl"
