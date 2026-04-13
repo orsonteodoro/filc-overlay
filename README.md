@@ -34,14 +34,29 @@ emerge -ve @world (or more selective rebuilds).
 
 Toolchain updates are handled by re-running the appropriate parts of filc-bootstrap first, then triggering a new world rebuild here.
 
+## Installation
+
+```bash
+mkdir -p /etc/portage/repos.conf
+cat > /etc/portage/repos.conf/filc.conf <<EOF
+[filc]
+location = /var/db/repos/filc
+sync-type = git
+sync-uri = https://github.com/OrsonTeodoro/filc-overlay.git
+auto-sync = yes
+EOF
+
+emerge --sync filc
+```
+
 ### Related Repository
 
 filc-bootstrap — distro-agnostic Pre-LC + LC phases.
 
 ---
 
-Status: Planning / initial ebuilds
-Main goal: Make Fil-C a first-class, maintainable experience on Gentoo.
+- Status: Planning / initial ebuilds
+- Main goal: Make Fil-C a first-class, maintainable experience on Gentoo.
 
 
 
