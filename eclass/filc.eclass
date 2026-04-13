@@ -1,30 +1,13 @@
 # Copyright 2026 Orson Teodoro
 # Distributed under the terms of the GNU General Public License v2
 
-# @ECLASS: filc.eclass
-# @MAINTAINER: Orson Teodoro <orsonteodoro@gmail.com>
-# @SUPPORTED_EAPIS: 8
-# @DESCRIPTION:
-# Common functions for Fil-C ebuilds. Provides consistent multi-slot paths.
-
-inherit multilib
+inherit multilib toolchain-funcs
 
 # Path helpers
-filc_get_version() {
-    echo "${PV}"
-}
-
-filc_get_libdir() {
-    echo "/usr/lib/fil-c/$(filc_get_version)"
-}
-
-filc_get_yolo_libdir() {
-    echo "/usr/lib/yolo/$(filc_get_version)"
-}
-
-filc_get_bindir() {
-    echo "$(filc_get_libdir)/bin"
-}
+filc_get_version() { echo "${PV}"; }
+filc_get_libdir()  { echo "/usr/lib/fil-c/$(filc_get_version)"; }
+filc_get_yolo_libdir() { echo "/usr/lib/yolo/$(filc_get_version)"; }
+filc_get_bindir()  { echo "$(filc_get_libdir)/bin"; }
 
 # Slotting
 if [[ "${PV}" == "9999" ]]; then
@@ -33,32 +16,51 @@ else
     SLOT="${PV%.*}"
 fi
 
-# Common dependencies
-DEPEND="
-    dev-libs/libxml2
-    net-misc/curl
-    sys-devel/clang
-    sys-devel/llvm
-    dev-util/cmake
-    dev-util/ninja
-    sys-devel/gcc
-"
+IUSE="glibc musl"
+REQUIRED_USE="^^ ( glibc musl )"
 
+# Default to glibc
+if ! use glibc && ! use musl; then
+    IUSE+=" +glibc"
+fi
+
+DEPEND="app-eselect/eselect-filc"
 RDEPEND="${DEPEND}"
 BDEPEND="${DEPEND}"
 
-# Default install helper
-filc_src_install() {
-    local filc_libdir=$(filc_get_libdir)
-    local yolo_libdir=$(filc_get_yolo_libdir)
+# Create LLVM-style symlinks
+filc_create_symlinks() {
     local bindir=$(filc_get_bindir)
+    local chost=$(tc-getCC)
 
-    dodir "${bindir}"
-    dodir "${filc_libdir}/lib"
-    dodir "${yolo_libdir}"
+    dodir /usr/bin
 
-    einfo "Fil-C ${PV} installed to ${filc_libdir}"
-    einfo "Yolo glibc installed to ${yolo_libdir}"
+    dosym "${bindir}/filcc" /usr/bin/filcc
+    dosym "${bindir}/fil++" /usr/bin/fil++
+
+    dosym "${bindir}/filcc" /usr/bin/filcc-${PV}
+    dosym "${bindir}/fil++" /usr/bin/fil++-${PV}
+
+    dosym "${bindir}/filcc" /usr/bin/${chost}-filcc
+    dosym "${bindir}/fil++" /usr/bin/${chost}-fil++
+
+    dosym "${bindir}/filcc" /usr/bin/${chost}-filcc-${PV}
+    dosym "${bindir}/fil++" /usr/bin/${chost}-fil++-${PV}
+
+    einfo "Created LLVM-style symlinks for Fil-C ${PV}"
 }
 
-EXPORT_FUNCTIONS src_install
+# Safe cleanup that respects parallel versions
+filc_pkg_prerm() {
+    # Only remove symlinks if this version is not being replaced by another Fil-C version
+    if [[ -z "${REPLACED_BY_VERSION}" ]]; then
+        rm -f "${ROOT}"/usr/bin/filcc "${ROOT}"/usr/bin/fil++ 2>/dev/null || true
+        rm -f "${ROOT}"/usr/bin/filcc-* "${ROOT}"/usr/bin/*filcc-* 2>/dev/null || true
+        rm -f "${ROOT}"/usr/bin/fil++-* "${ROOT}"/usr/bin/*fil++-* 2>/dev/null || true
+        einfo "Cleaned up Fil-C symlinks for version ${PV}"
+    else
+        einfo "Preserving symlinks (replaced by version ${REPLACED_BY_VERSION})"
+    fi
+}
+
+EXPORT_FUNCTIONS src_install pkg_prerm
