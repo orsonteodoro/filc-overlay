@@ -13,18 +13,9 @@ LICENSE="MIT"
 SLOT="0.678"
 KEYWORDS="~amd64"
 
-DEPEND="
-    dev-libs/libxml2
-    net-misc/curl
-    sys-devel/clang
-    sys-devel/llvm
-    dev-util/cmake
-    dev-util/ninja
-    sys-devel/gcc
-"
-
-RDEPEND="${DEPEND}"
-BDEPEND="${DEPEND}"
+DEPEND="${DEPEND}"
+RDEPEND="${RDEPEND}"
+BDEPEND="${BDEPEND}"
 
 S="${WORKDIR}/fil-c-0.678"
 
@@ -35,24 +26,16 @@ src_configure() {
 src_compile() {
     einfo "Building Fil-C 0.678..."
     # TODO: Integrate build scripts
-    die "Full build integration coming in next iteration"
+    die "Full build integration coming soon"
 }
 
 src_install() {
-    local filc_libdir="/usr/lib/fil-c/${PV}"
-    local yolo_libdir="/usr/lib/yolo/${PV}"
-
-    dodir "${filc_libdir}/bin"
-    dodir "${filc_libdir}/lib"
-    dodir "${yolo_libdir}"
-
-    einfo "Fil-C ${PV} installed to ${filc_libdir}"
-    einfo "Yolo glibc installed to ${yolo_libdir}"
+    filc_src_install
 }
 
 pkg_postinst() {
     elog "Fil-C version 0.678 installed."
     elog ""
-    elog "To make it active:"
+    elog "To activate it:"
     elog "    eselect filc set 0.678"
 }

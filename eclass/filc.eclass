@@ -4,54 +4,45 @@
 # @ECLASS: filc.eclass
 # @MAINTAINER: Orson Teodoro <orsonteodoro@gmail.com>
 # @SUPPORTED_EAPIS: 8
-# @PROVIDES: filc
 # @DESCRIPTION:
-# Common functions and defaults for Fil-C ebuilds.
-# Provides consistent multi-slot installation paths and helper functions.
+# Common functions for Fil-C ebuilds. Provides consistent multi-slot paths.
 
 inherit multilib
 
 # =============================================================================
-# Version and Path Helpers
+# Path Helpers (Easy for Gentoo users)
 # =============================================================================
 
 # @FUNCTION: filc_get_version
-# @DESCRIPTION:
-# Returns the version string used for installation directories
 filc_get_version() {
     echo "${PV}"
 }
 
 # @FUNCTION: filc_get_libdir
-# @DESCRIPTION:
-# Returns the base directory for Fil-C toolchain
+# Returns base path for Fil-C toolchain
 filc_get_libdir() {
     echo "/usr/lib/fil-c/$(filc_get_version)"
 }
 
 # @FUNCTION: filc_get_yolo_libdir
-# @DESCRIPTION:
-# Returns the base directory for the Yolo glibc layer
+# Returns base path for Yolo glibc layer
 filc_get_yolo_libdir() {
     echo "/usr/lib/yolo/$(filc_get_version)"
 }
 
 # @FUNCTION: filc_get_bindir
-# @DESCRIPTION:
-# Returns the bin directory for this Fil-C version
 filc_get_bindir() {
     echo "$(filc_get_libdir)/bin"
 }
 
 # =============================================================================
-# Default Slotting
+# Slotting (Simple and intuitive)
 # =============================================================================
 
-# Use "live" for 9999, otherwise use major.minor (e.g. 0.678)
 if [[ "${PV}" == "9999" ]]; then
     SLOT="live"
 else
-    SLOT="${PV%.*}"
+    SLOT="${PV%.*}"          # e.g. 0.678 → SLOT="0.678"
 fi
 
 # =============================================================================
@@ -72,7 +63,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="${DEPEND}"
 
 # =============================================================================
-# Default src_install stub (can be overridden)
+# Default src_install (can be overridden)
 # =============================================================================
 
 filc_src_install() {
@@ -88,5 +79,4 @@ filc_src_install() {
     einfo "Yolo glibc installed to ${yolo_libdir}"
 }
 
-# Export the default function so ebuilds can call it with "default"
 EXPORT_FUNCTIONS src_install

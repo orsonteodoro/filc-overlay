@@ -14,18 +14,9 @@ LICENSE="MIT"
 SLOT="live"
 KEYWORDS=""
 
-DEPEND="
-    dev-libs/libxml2
-    net-misc/curl
-    sys-devel/clang
-    sys-devel/llvm
-    dev-util/cmake
-    dev-util/ninja
-    sys-devel/gcc
-"
-
-RDEPEND="${DEPEND}"
-BDEPEND="${DEPEND}"
+DEPEND="${DEPEND}"
+RDEPEND="${RDEPEND}"
+BDEPEND="${BDEPEND}"
 
 src_unpack() {
     git-r3_src_unpack
@@ -40,29 +31,19 @@ src_configure() {
 }
 
 src_compile() {
-    einfo "Building Fil-C (this will take a long time)..."
-    # TODO: Integrate actual bootstrap build scripts here
-    # For now we leave a placeholder
-    die "Full build integration coming in next iteration"
+    einfo "Building Fil-C live version (this will take a long time)..."
+    # TODO: Integrate bootstrap build scripts here in future iteration
+    die "Full build integration coming soon"
 }
 
 src_install() {
-    local filc_libdir="/usr/lib/fil-c/${PV}"
-    local yolo_libdir="/usr/lib/yolo/${PV}"
-
-    dodir "${filc_libdir}/bin"
-    dodir "${filc_libdir}/lib"
-    dodir "${yolo_libdir}"
-
-    # Placeholder install
-    einfo "Fil-C ${PV} installed to ${filc_libdir}"
-    einfo "Yolo glibc installed to ${yolo_libdir}"
+    filc_src_install
 }
 
 pkg_postinst() {
     elog "Fil-C live version installed."
     elog ""
-    elog "To make it active:"
+    elog "To activate it:"
     elog "    eselect filc set live"
     elog ""
     elog "After activation you can compile with:"
