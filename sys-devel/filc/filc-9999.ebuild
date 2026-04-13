@@ -10,7 +10,7 @@ HOMEPAGE="https://fil-c.org/"
 EGIT_REPO_URI="https://github.com/pizlonator/fil-c.git"
 EGIT_BRANCH="deluge"
 
-LICENSE="Apache-2.0 BSD-2"
+LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
 SLOT="live"
 KEYWORDS=""
 

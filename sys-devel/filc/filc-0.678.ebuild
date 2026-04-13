@@ -9,7 +9,7 @@ DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
 SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/0.678.tar.gz -> fil-c-0.678.tar.gz"
 
-LICENSE="Apache-2.0 BSD-2"
+LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
 SLOT="0.678"
 KEYWORDS="~amd64"
 
