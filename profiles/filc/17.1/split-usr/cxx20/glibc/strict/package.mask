@@ -1,0 +1,5 @@
+# Strict profile: C/C++ focused (full mitigation)
+dev-lang/rust
+virtual/rust
+dev-lang/go
+dev-go/*

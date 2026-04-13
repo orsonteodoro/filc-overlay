@@ -1,0 +1,9 @@
+# Fil-C unstrict profile: split-usr / cxx20 / musl
+CC="/opt/fil/bin/filcc"
+CXX="/opt/fil/bin/fil++"
+
+CXXFLAGS="${CXXFLAGS} -std=c++20"
+
+# Hardening enabled across the overlay (safe with libpizlo.so)
+CFLAGS="${CFLAGS} -fPIC -fstack-protector-strong"
+CXXFLAGS="${CXXFLAGS} -fPIC -fstack-protector-strong"
