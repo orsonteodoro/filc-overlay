@@ -27,7 +27,7 @@ BDEPEND="${DEPEND}"
 # Sanity Checks
 # =============================================================================
 
-pkg_pretend() {
+filc_pkg_pretend() {
     # Check if bootstrap has been run (look for key artifacts)
     if [[ ! -x "/opt/fil/bin/filcc" && ! -x "/usr/bin/filcc" ]]; then
         ewarn "===================================================================="
@@ -43,14 +43,14 @@ pkg_pretend() {
     fi
 
     # Downgrade protection
-    if has_version ">${CATEGORY}/${PN}-r1000"
+    if has_version ">${CATEGORY}/${PN}-r1000" ; then
         eerror "Downgrading Fil-C from ${oldver} to ${PV} is not allowed."
         eerror "This would break the yolo-glibc ABI."
         die "Downgrade of Fil-C is not permitted."
     fi
 }
 
-pkg_setup() {
+filc_pkg_setup() {
     # Mixing glibc/musl check
     if use elibc_glibc && has_version "sys-libs/musl"; then
         eerror "Cannot install glibc-based Fil-C on a musl system."
