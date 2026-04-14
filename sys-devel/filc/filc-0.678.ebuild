@@ -9,7 +9,7 @@ DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
 SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/v${PV}.tar.gz -> fil-c-${PV}.tar.gz"
 
-LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
+LICENSE="Apache-2.0 BSD-2 LIBC-2.1+ MIT"
 SLOT="0.678"
 KEYWORDS="~amd64"
 RESTRICT="sandbox"
@@ -61,6 +61,7 @@ src_compile() {
 src_install() {
     filc_src_install
     filc_create_symlinks
+    filc_update_ld_so_conf
 }
 
 pkg_prerm() {
@@ -68,13 +69,9 @@ pkg_prerm() {
 }
 
 pkg_postinst() {
-    filc_update_ld_so_conf
-
     elog "Fil-C version 0.678 installed to $(filc_get_libdir)"
+    elog "Yolo glibc installed to $(filc_get_yolo_libdir)"
     elog ""
     elog "To activate this version:"
     elog "    eselect filc set 0.678"
-    elog ""
-    elog "You can now compile with:"
-    elog "    filcc hello.c -o hello"
 }

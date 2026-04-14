@@ -10,8 +10,8 @@ HOMEPAGE="https://fil-c.org/"
 EGIT_REPO_URI="https://github.com/pizlonator/fil-c.git"
 EGIT_BRANCH="deluge"
 
-LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
-SLOT="live"
+LICENSE="Apache-2.0 BSD-2 LIBC-2.1+ MIT"
+SLOT="9999"          # monotonic high number for live version
 KEYWORDS=""
 RESTRICT="sandbox"
 
@@ -46,19 +46,19 @@ src_configure() {
 }
 
 src_compile() {
-    einfo "Building Fil-C live version (this will take a long time)..."
+    einfo "Building Fil-C live version..."
 
     cd "${S}" || die
 
     if use elibc_glibc; then
         if [[ -x "./build_all_fast_glibc.sh" ]]; then
-            ./build_all_fast_glibc.sh || die "Fil-C glibc build failed"
+            ./build_all_fast_glibc.sh || die
         else
             die "build_all_fast_glibc.sh not found"
         fi
     elif use elibc_musl; then
         if [[ -x "./build_all_fast_musl.sh" ]]; then
-            ./build_all_fast_musl.sh || die "Fil-C musl build failed"
+            ./build_all_fast_musl.sh || die
         else
             die "build_all_fast_musl.sh not found"
         fi
@@ -68,6 +68,7 @@ src_compile() {
 src_install() {
     filc_src_install
     filc_create_symlinks
+    filc_update_ld_so_conf
 }
 
 pkg_prerm() {
@@ -75,12 +76,11 @@ pkg_prerm() {
 }
 
 pkg_postinst() {
-    filc_update_ld_so_conf
-
-    elog "Fil-C live version installed to $(filc_get_libdir)"
+    elog "Fil-C live version (9999) installed to $(filc_get_libdir)"
+    elog "Yolo glibc installed to $(filc_get_yolo_libdir)"
     elog ""
     elog "To activate this version:"
-    elog "    eselect filc set live"
+    elog "    eselect filc set 9999"
     elog ""
     elog "You can now compile with:"
     elog "    filcc hello.c -o hello"
