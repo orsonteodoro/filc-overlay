@@ -47,19 +47,19 @@ src_configure() {
 }
 
 src_compile() {
-    einfo "Building Fil-C live version..."
+    einfo "Running Fil-C bootstrap (pizlix style)..."
 
     cd "${S}" || die
 
     if use elibc_glibc; then
         if [[ -x "./build_all_fast_glibc.sh" ]]; then
-            ./build_all_fast_glibc.sh || die "Fil-C glibc build failed"
+            ./build_all_fast_glibc.sh || die "Fil-C glibc bootstrap failed"
         else
             die "build_all_fast_glibc.sh not found"
         fi
     elif use elibc_musl; then
         if [[ -x "./build_all_fast_musl.sh" ]]; then
-            ./build_all_fast_musl.sh || die "Fil-C musl build failed"
+            ./build_all_fast_musl.sh || die "Fil-C musl bootstrap failed"
         else
             die "build_all_fast_musl.sh not found"
         fi
@@ -68,24 +68,18 @@ src_compile() {
 
 src_install() {
     filc_src_install
-
-    # Copy artifacts from bootstrap output to final locations
-    if [[ -d "/opt/fil" ]]; then
-        cp -a /opt/fil/. "${D}/usr/lib/fil-c/" || true
-    fi
-
-    if [[ -d "/usr/lib/yolo" ]]; then
-        cp -a /usr/lib/yolo/. "${D}/usr/lib/yolo/" || true
-    fi
 }
 
 pkg_postinst() {
-    elog "Fil-C installed."
+    elog "Fil-C (live) has been installed using pizlix paths."
     elog ""
-    elog "To use Fil-C as compiler:"
-    elog "    export CC=/usr/lib/fil-c/bin/filcc"
-    elog "    export CXX=/usr/lib/fil-c/bin/fil++"
+    elog "To use it as your compiler:"
+    elog "    export CC=/usr/bin/filcc"
+    elog "    export CXX=/usr/bin/fil++"
     elog ""
-    elog "Then rebuild packages with:"
+    elog "Recommended next step:"
     elog "    emerge -e @system"
+    elog "    emerge -ve @world"
+    elog ""
+    elog "Note: This is Phase 1 (bootstrap-based). A cleaner integration is planned for Phase 2."
 }
