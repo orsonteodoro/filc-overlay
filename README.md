@@ -79,7 +79,7 @@ emerge -e @system
 emerge -ve @world
 ```
 
-###Overlay Plan & Future Transition
+### Overlay Plan & Future Transition
 #### Phase 1 (Current - Initial Adoption)Use existing Fil-C bootstrap scripts inside the ebuilds.
 * Mono-slot installation for simplicity.
 * Focus on testing viability on Gentoo.
