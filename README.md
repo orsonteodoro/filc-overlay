@@ -49,7 +49,8 @@ Split-usr variants are also available (replace merged-usr with split-usr).
 * strict — C/C++ focused. Masks Rust and Go for stronger mitigation.
 * hardcore — Extreme security mode. Aggressive masking of non-C/C++ languages. Experimental and adventurous. May require alternative tools or package managers (e.g. Paludis).
 
-Hardening flags are enabled across all profiles.How to Select a Profile
+Hardening flags are enabled across all profiles.
+### How to Select a Profile
 ```bash
 
 # Recommended default
@@ -91,7 +92,7 @@ emerge -ve @world
 * Improve multi-slot support and eselect integration.
 * Make the packaging more compliant with Gentoo and other distro guidelines.
 * Reduce reliance on hardcoded bootstrap paths.
-* Better support for parallel versions and clean upgrades.
+* Better support for parallel Fil-C compiler versions and clean upgrades for stable packages (e.g. -std=c++17 and earlier, @system [OS Core]) and unstable packages (e.g. -std=c++23 and above, Chromium).
 
 The goal is to evolve from "pizlix-ing Gentoo" to a proper, maintainable Gentoo-native integration.
 
