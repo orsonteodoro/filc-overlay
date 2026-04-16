@@ -12,6 +12,8 @@ For the first version, we are using the **existing Fil-C bootstrap scripts** (`b
 - Allows quick testing of Fil-C viability on Gentoo.
 - Reuses the complex build logic already developed in `filc-bootstrap`.
 - Avoids immediate divergence from upstream Fil-C.
+- Less patching
+- Less maintenance work
 
 **Limitations of this approach:**
 - The build process is not fully native Gentoo style.
