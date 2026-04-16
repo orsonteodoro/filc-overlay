@@ -109,6 +109,8 @@ The goal is to evolve from "pizlix-ing Gentoo" to a proper, maintainable Gentoo-
 
 ### Feedback & Contributions
 
-This is an early-stage overlay. Feedback and contributions are welcome.Related Project: filc-bootstrap
+This is an early-stage overlay. Feedback and contributions are welcome.
+
+* ***Related Project***: [filc-bootstrap](https://github.com/orsonteodoro/filc-bootstrap)
 
 
