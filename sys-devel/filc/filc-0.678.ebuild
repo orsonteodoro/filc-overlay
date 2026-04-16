@@ -7,10 +7,10 @@ inherit filc
 
 DESCRIPTION="Filip Pizlo's Fil-C memory-safe C/C++ compiler (tagged release)"
 HOMEPAGE="https://fil-c.org/"
-SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/v${PV}.tar.gz -> fil-c-${PV}.tar.gz"
+SRC_URI="https://github.com/pizlonator/fil-c/archive/refs/tags/0.678.tar.gz -> fil-c-0.678.tar.gz"
 
-LICENSE="Apache-2.0 BSD-2 LIBC-2.1+ MIT"
-SLOT="0.678"
+LICENSE="Apache-2.0 BSD-2 LGPL-2.1+ MIT"
+SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="sandbox"
 
@@ -25,7 +25,8 @@ DEPEND="
     dev-util/cmake
     dev-util/ninja
     sys-devel/gcc
-    app-eselect/eselect-filc
+    dev-lang/ruby
+    sys-kernel/linux-headers
 "
 
 RDEPEND="${DEPEND}"
@@ -60,18 +61,20 @@ src_compile() {
 
 src_install() {
     filc_src_install
-    filc_create_symlinks
-    filc_update_ld_so_conf
-}
 
-pkg_prerm() {
-    filc_pkg_prerm
+    if [[ -d "/opt/fil" ]]; then
+        cp -a /opt/fil/. "${D}/usr/lib/fil-c/" || true
+    fi
+
+    if [[ -d "/usr/lib/yolo" ]]; then
+        cp -a /usr/lib/yolo/. "${D}/usr/lib/yolo/" || true
+    fi
 }
 
 pkg_postinst() {
-    elog "Fil-C version 0.678 installed to $(filc_get_libdir)"
-    elog "Yolo glibc installed to $(filc_get_yolo_libdir)"
+    elog "Fil-C 0.678 installed."
     elog ""
-    elog "To activate this version:"
-    elog "    eselect filc set 0.678"
+    elog "To use Fil-C as compiler:"
+    elog "    export CC=/usr/lib/fil-c/bin/filcc"
+    elog "    export CXX=/usr/lib/fil-c/bin/fil++"
 }
