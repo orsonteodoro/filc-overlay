@@ -19,6 +19,7 @@ For the first version, we are using the **existing Fil-C bootstrap scripts** (`b
 - The build process is not fully native Gentoo style.
 - Install paths are based on the bootstrap's pizlix layout.
 - We are effectively "pizlix-ing" Gentoo for now.  Pizlix is the Linux distro with the Fil-C compiler.
+- Longer updates for vendored packages (e.g. glibc, musl) or a security risk if vulnerability cannot be protected by compiler based mitigations but requires code changes instead
 
 ## Installation
 
@@ -88,6 +89,7 @@ emerge -ve @world
 * Mono-slot installation for simplicity.
 * Focus on testing viability on Gentoo.
 * Provide basic profiles (unstrict / strict / hardcore).
+* Monolithic ebuild of Fil-C
 
 #### Phase 2 (Transition to Native Integration)
 * Gradually refactor the build system toward a clean CMake/Meson-based ebuild.
@@ -95,6 +97,7 @@ emerge -ve @world
 * Make the packaging more compliant with Gentoo and other distro guidelines.
 * Reduce reliance on hardcoded bootstrap paths.
 * Better support for parallel Fil-C compiler versions and clean upgrades for stable packages (e.g. -std=c++17 and earlier, @system [OS Core]) and unstable packages (e.g. -std=c++23 and above, Chromium).
+* Split ebuilds of Fil-C
 
 The goal is to evolve from "pizlix-ing Gentoo" to a proper, maintainable Gentoo-native integration.
 
