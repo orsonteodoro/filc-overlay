@@ -19,7 +19,7 @@ For the first version, we are using the **existing Fil-C bootstrap scripts** (`b
 - The build process is not fully native Gentoo style.
 - Install paths are based on the bootstrap's pizlix layout.
 - We are effectively "pizlix-ing" Gentoo for now.  Pizlix is the Linux distro with the Fil-C compiler.
-- Longer updates for vendored packages (e.g. glibc, musl) or a security risk if vulnerability cannot be protected by compiler based mitigations but requires code changes instead
+- Longer updates for vendored packages (e.g. glibc, musl) or a security risk if vulnerability cannot be protected by compiler based mitigations or by the libpizlo.so runtime but requires code changes instead
 
 ## Installation
 
