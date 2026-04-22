@@ -4,6 +4,8 @@ Gentoo overlay for **Fil-C** — Filip Pizlo’s memory-safe C/C++ compiler.
 
 This overlay provides ebuilds and profiles to integrate Fil-C into Gentoo.
 
+Everything in this overlay is mostly AI generated.
+
 ## Current Approach (Option A - Initial Adoption)
 
 For the first version, we are using the **existing Fil-C bootstrap scripts** (`build_all_fast_glibc.sh`, etc.) directly inside the ebuilds.
